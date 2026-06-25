@@ -393,7 +393,23 @@ function renderDeviceList() {
   list.querySelectorAll(".btn-login-dev").forEach(btn => {
     btn.addEventListener("click", () => {
       const dev = loginDevice(btn.dataset.id, btn.dataset.key);
-      if (dev) goToDash(dev);
+      if (!dev) return;
+      const all = getData(dev.id);
+      const last = all.at(-1) || { temp: 28, hum: 70, soil: 45, light: 5000, nitrogen: 140, fosfor: 22, kalium: 160, ph: 6.4, ec: 1.4 };
+      const v = () => (Math.random() - 0.5) * 2;
+      addDataPoint(
+        dev.id,
+        +(last.temp + v()).toFixed(1),
+        +(last.hum + v()).toFixed(1),
+        Math.min(100, Math.max(0, last.soil + Math.round(v()))),
+        Math.min(2200, Math.max(0, last.light + Math.round(v() * 20))),
+        +(last.nitrogen + Math.round(v() * 5)).toFixed(0),
+        +(last.fosfor + Math.round(v() * 2)).toFixed(0),
+        +(last.kalium + Math.round(v() * 5)).toFixed(0),
+        +(last.ph + (Math.random() - 0.5) * 0.1).toFixed(1),
+        +(last.ec + (Math.random() - 0.5) * 0.05).toFixed(2)
+      );
+      goToDash(dev);
     });
   });
 
