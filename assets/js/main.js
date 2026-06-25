@@ -833,20 +833,45 @@ window.addEventListener("DOMContentLoaded", () => {
   applyLang();
 });
 
-// function simNPK(opts) {
-//   const dev = getActiveDevice();
-//   if (!dev) { console.log("No active device"); return; }
-//   const all = getData(dev.id);
-//   const last = all[all.length - 1] || { temp: 28, hum: 70, soil: 45, light: 5000 };
-//   addDataPoint(
-//     dev.id,
-//     last.temp, last.hum, last.soil, last.light,
-//     opts?.nitrogen ?? 30,
-//     opts?.fosfor   ?? 5,
-//     opts?.kalium   ?? 50,
-//     opts?.ph       ?? 4.5,
-//     opts?.ec       ?? 0.3
-//   );
-//   load();
-//   console.log("✓ Simulasi:", { nitrogen: opts?.nitrogen ?? 30, fosfor: opts?.fosfor ?? 5, kalium: opts?.kalium ?? 50, ph: opts?.ph ?? 4.5, ec: opts?.ec ?? 0.3 });
-// }
+function simNPK(opts = {}) {
+  const dev = getActiveDevice();
+
+  if (!dev) {
+    console.log("No active device");
+    return;
+  }
+
+  const last = getData(dev.id).at(-1);
+
+  if (!last) {
+    console.log("No data available");
+    return;
+  }
+
+  addDataPoint(
+    dev.id,
+
+    // sensor lingkungan tetap
+    last.temp,
+    last.hum,
+    last.soil,
+    last.light,
+
+    // hanya ubah yang diberikan
+    opts.nitrogen !== undefined ? opts.nitrogen : last.nitrogen,
+    opts.fosfor   !== undefined ? opts.fosfor   : last.fosfor,
+    opts.kalium   !== undefined ? opts.kalium   : last.kalium,
+    opts.ph       !== undefined ? opts.ph       : last.ph,
+    opts.ec       !== undefined ? opts.ec       : last.ec
+  );
+
+  load();
+
+  console.log("✓ Simulasi:", {
+    nitrogen: opts.nitrogen !== undefined ? opts.nitrogen : last.nitrogen,
+    fosfor:   opts.fosfor   !== undefined ? opts.fosfor   : last.fosfor,
+    kalium:   opts.kalium   !== undefined ? opts.kalium   : last.kalium,
+    ph:       opts.ph       !== undefined ? opts.ph       : last.ph,
+    ec:       opts.ec       !== undefined ? opts.ec       : last.ec
+  });
+}
