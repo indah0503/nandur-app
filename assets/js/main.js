@@ -2,6 +2,135 @@
 let c1 = null, c2 = null, c3 = null, curRange = "24h", timer = null;
 const $ = s => document.getElementById(s);
 
+/* ─────────── TRANSLATIONS ─────────── */
+const T = {
+  id: {
+    subtitle: "Monitoring Lingkungan Pertanian",
+    tab_guest: "Tamu", tab_login: "Masuk", tab_register: "Daftar",
+    label_device_id: "Device ID (Gunakan huruf kapital)",
+    label_api_key: "API Key", label_crop: "Pilih Tanaman",
+    label_email: "Email", label_password: "Password",
+    label_fullname: "Nama Lengkap", label_name: "Nama",
+    label_device_name: "Nama Perangkat",
+    crop_padi: "Padi", crop_jagung: "Jagung",
+    btn_view_dashboard: "Lihat Dashboard", btn_login: "Masuk", btn_register: "Daftar",
+    btn_account: "Akun", btn_save: "Simpan", btn_logout: "Keluar",
+    btn_back_dashboard: "Kembali ke Dashboard",
+    btn_add_device: "+ Tambah Perangkat", btn_save_device: "Simpan Perangkat",
+    hint_guest: "Masuk atau daftar untuk menyimpan data ke akun Anda.",
+    ph_device_id: "Contoh: ESP32_001", ph_api_key: "Masukkan API Key",
+    ph_password: "Masukkan password", ph_name: "Nama Anda",
+    ph_create_pass: "Buat password", ph_device_name: "Contoh: Sensor Kebun Belakang",
+    card_temp: "Suhu", card_humid: "Kelembaban Udara",
+    card_soil: "Kelembaban Tanah", card_light: "Intensitas Cahaya",
+    card_ph: "pH Tanah", card_ec: "EC Tanah",
+    section_nutrients: "Unsur Hara Tanah", section_devices: "Daftar Perangkat",
+    account_title: "Akun Saya",
+    modal_add_device: "Tambah Perangkat Baru",
+    rekom_title: "Rekomendasi Pemupukan",
+    range_24h: "24 Jam", range_7d: "7 Hari", range_30d: "30 Hari",
+    chart_th: "Suhu & Kelembaban Udara", chart_sc: "Kelembaban Tanah & Cahaya",
+    chart_npk: "Tren Unsur Hara (N, P, K)",
+    history_title: "Riwayat Data",
+    th_time: "Waktu", th_temp: "Suhu (°C)",
+    th_humid: "Keleb. Udara (%)", th_soil: "Keleb. Tanah (%)",
+    th_light: "Cahaya (lux)", th_ph: "PH Tanah",
+    th_ec: "EC Tanah (mS/cm)",
+    no_data: "Belum ada data",
+    chart_label_temp: "Suhu", chart_label_humid: "Kelembaban",
+    chart_label_soil: "Tanah", chart_label_light: "Cahaya",
+    status_rendah: "Rendah", status_tinggi: "Tinggi", status_optimal: "Optimal",
+    crop_label: "Tanaman",
+    err_fill_all: "Isi semua kolom",
+    err_wrong_device: "Device ID atau API Key salah",
+    err_wrong_email: "Email atau password salah",
+    err_short_pass: "Password minimal 4 karakter",
+    err_email_taken: "Email sudah terdaftar",
+    err_device_taken: "Device ID sudah terdaftar di akun Anda",
+    register_success: "Pendaftaran berhasil! Silakan masuk.",
+    err_save_guest: "Silakan masuk atau daftar untuk menyimpan data.",
+    err_account_only: "Silakan masuk untuk mengakses akun.",
+    saved: "Tersimpan!",
+    confirm_delete_device: "Hapus perangkat ini?",
+    device_empty: 'Belum ada perangkat. Klik "+ Tambah Perangkat" untuk menambahkan.',
+    device_active: "Aktif",
+    rekom_n_low: "Nitrogen rendah — tambahkan pupuk Urea atau ZA.",
+    rekom_n_high: "Nitrogen terlalu tinggi — kurangi dosis pupuk N, risiko rebah (lodging) meningkat.",
+    rekom_p_low: "Fosfor rendah — aplikasikan SP-36 atau TSP sebelum masa tanam/anakan.",
+    rekom_p_high: "Fosfor berlebih — tunda pemupukan P pada musim ini.",
+    rekom_k_low: "Kalium rendah — tambahkan KCl pada fase anakan aktif.",
+    rekom_k_high: "Kalium terlalu tinggi — hentikan pemupukan K sementara.",
+    rekom_ph_low: "pH terlalu asam — pertimbangkan pengapuran dengan dolomit atau kapur pertanian.",
+    rekom_ph_high: "pH terlalu basa — lakukan pengairan intensif atau tambahkan sulfur.",
+    rekom_ec_high: "EC tinggi — indikasi salinitas berlebih, lakukan pencucian tanah.",
+  },
+  en: {
+    subtitle: "Agricultural Environment Monitoring",
+    tab_guest: "Guest", tab_login: "Login", tab_register: "Register",
+    label_device_id: "Device ID (Use uppercase letters)",
+    label_api_key: "API Key", label_crop: "Select Crop",
+    label_email: "Email", label_password: "Password",
+    label_fullname: "Full Name", label_name: "Name",
+    label_device_name: "Device Name",
+    crop_padi: "Rice", crop_jagung: "Corn",
+    btn_view_dashboard: "View Dashboard", btn_login: "Login", btn_register: "Register",
+    btn_account: "Account", btn_save: "Save", btn_logout: "Logout",
+    btn_back_dashboard: "Back to Dashboard",
+    btn_add_device: "+ Add Device", btn_save_device: "Save Device",
+    hint_guest: "Login or register to save data to your account.",
+    ph_device_id: "e.g. ESP32_001", ph_api_key: "Enter API Key",
+    ph_password: "Enter password", ph_name: "Your name",
+    ph_create_pass: "Create a password", ph_device_name: "e.g. Backyard Sensor",
+    card_temp: "Temperature", card_humid: "Air Humidity",
+    card_soil: "Soil Moisture", card_light: "Light Intensity",
+    card_ph: "Soil pH", card_ec: "Soil EC",
+    section_nutrients: "Soil Nutrients", section_devices: "Device List",
+    account_title: "My Account",
+    modal_add_device: "Add New Device",
+    rekom_title: "Fertilization Recommendation",
+    range_24h: "24 Hours", range_7d: "7 Days", range_30d: "30 Days",
+    chart_th: "Temperature & Air Humidity", chart_sc: "Soil Moisture & Light",
+    chart_npk: "Nutrient Trend (N, P, K)",
+    history_title: "Data History",
+    th_time: "Time", th_temp: "Temp (°C)",
+    th_humid: "Air Humidity (%)", th_soil: "Soil Moisture (%)",
+    th_light: "Light (lux)", th_ph: "Soil pH",
+    th_ec: "Soil EC (mS/cm)",
+    no_data: "No data yet",
+    chart_label_temp: "Temperature", chart_label_humid: "Humidity",
+    chart_label_soil: "Soil", chart_label_light: "Light",
+    status_rendah: "Low", status_tinggi: "High", status_optimal: "Optimal",
+    crop_label: "Crop",
+    err_fill_all: "Fill in all fields",
+    err_wrong_device: "Invalid Device ID or API Key",
+    err_wrong_email: "Invalid email or password",
+    err_short_pass: "Password must be at least 4 characters",
+    err_email_taken: "Email is already registered",
+    err_device_taken: "Device ID is already registered to your account",
+    register_success: "Registration successful! Please login.",
+    err_save_guest: "Please login or register to save data.",
+    err_account_only: "Please login to access your account.",
+    saved: "Saved!",
+    confirm_delete_device: "Delete this device?",
+    device_empty: 'No devices yet. Click "+ Add Device" to add one.',
+    device_active: "Active",
+    rekom_n_low: "Low nitrogen — add Urea or ZA fertilizer.",
+    rekom_n_high: "Nitrogen too high — reduce N fertilizer dose, lodging risk increases.",
+    rekom_p_low: "Low phosphorus — apply SP-36 or TSP before planting/tillering.",
+    rekom_p_high: "Excess phosphorus — postpone P fertilization this season.",
+    rekom_k_low: "Low potassium — add KCl during active tillering phase.",
+    rekom_k_high: "Potassium too high — temporarily stop K fertilization.",
+    rekom_ph_low: "pH too acidic — consider liming with dolomite or agricultural lime.",
+    rekom_ph_high: "pH too alkaline — perform intensive irrigation or add sulfur.",
+    rekom_ec_high: "High EC — indicates excess salinity, flush the soil.",
+  }
+};
+
+function t(key) {
+  const lang = getLang();
+  return (T[lang] && T[lang][key]) || (T.id && T.id[key]) || key;
+}
+
 /* ─────────── CROP / THRESHOLD ─────────── */
 function getCrop() {
   try { return sessionStorage.getItem("sf_crop") || "padi"; } catch { return "padi"; }
@@ -130,6 +259,54 @@ function loginDevice(id, key) {
   return devices.find(d => d.id === id && d.key === key) || null;
 }
 
+/* ─────────── LANGUAGE ─────────── */
+function getLang() {
+  try { return sessionStorage.getItem("sf_lang") || "id"; } catch { return "id"; }
+}
+
+function setLang(lang) {
+  sessionStorage.setItem("sf_lang", lang);
+}
+
+function toggleLang() {
+  const current = getLang();
+  const next = current === "id" ? "en" : "id";
+  setLang(next);
+  applyLang();
+}
+
+function applyLang() {
+  const lang = getLang();
+
+  document.querySelectorAll("#langToggle").forEach(btn => {
+    btn.textContent = lang === "id" ? "EN" : "ID";
+  });
+  document.documentElement.lang = lang;
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    el.textContent = t(el.dataset.i18n);
+  });
+
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+    el.placeholder = t(el.dataset.i18nPlaceholder);
+  });
+
+  if ($("cropLabel")) {
+    const crop = getCrop();
+    const th = getThreshold(crop);
+    $("cropLabel").textContent = t("crop_label") + ": " + th.label;
+  }
+
+  updateRangeLabels();
+  if ($("rekomPanel") && $("rekomPanel").style.display !== "none") {
+    const dev = getActiveDevice();
+    if (dev) {
+      const all = getData(dev.id);
+      if (all.length) updateRekomendasi(all[all.length - 1]);
+    }
+  }
+}
+
 /* ─────────── NAVIGATION ─────────── */
 function goToDash(dev) {
   if (dev) setActiveDevice(dev);
@@ -137,7 +314,7 @@ function goToDash(dev) {
 }
 
 function goToAccount() {
-  window.location.href = 'akun.html';
+  window.location.href = 'account.html';
 }
 
 function goToLogin() {
@@ -163,7 +340,7 @@ function displayDash(dev) {
   const crop = dev.crop || getCrop();
   sessionStorage.setItem("sf_crop", crop);
   const th = getThreshold(crop);
-  $("cropLabel").textContent = "Tanaman: " + th.label;
+  $("cropLabel").textContent = t("crop_label") + ": " + th.label;
   load();
   if (timer) clearInterval(timer);
   timer = setInterval(load, 30000);
@@ -194,7 +371,7 @@ function renderDeviceList() {
   const active = getActiveDevice();
   const list = $("deviceList");
   if (!devices.length) {
-    list.innerHTML = '<div class="empty">Belum ada perangkat. Klik "+ Tambah Perangkat" untuk menambahkan.</div>';
+    list.innerHTML = '<div class="empty">' + t("device_empty") + '</div>';
     return;
   }
   list.innerHTML = devices.map(d => {
@@ -206,9 +383,9 @@ function renderDeviceList() {
         <div class="device-id">${d.id} &middot; ${th.label}</div>
       </div>
       <div style="display:flex;gap:8px;align-items:center">
-        ${isActive ? '<span class="tag tag-crop">Aktif</span>' : ""}
-        <button class="btn-icon btn-login-dev" data-id="${d.id}" data-key="${d.key}" title="Buka Dashboard">&#9654;</button>
-        <button class="btn-icon btn-remove-dev" data-id="${d.id}" title="Hapus">&times;</button>
+        ${isActive ? '<span class="tag tag-crop">' + t("device_active") + '</span>' : ""}
+        <button class="btn-icon btn-login-dev" data-id="${d.id}" data-key="${d.key}" title="Dashboard">&#9654;</button>
+        <button class="btn-icon btn-remove-dev" data-id="${d.id}" title="Delete">&times;</button>
       </div>
     </div>`;
   }).join("");
@@ -222,7 +399,7 @@ function renderDeviceList() {
 
   list.querySelectorAll(".btn-remove-dev").forEach(btn => {
     btn.addEventListener("click", () => {
-      if (!confirm("Hapus perangkat ini?")) return;
+      if (!confirm(t("confirm_delete_device"))) return;
       removeUserDevice(btn.dataset.id);
       const active = getActiveDevice();
       if (active && active.id === btn.dataset.id) {
@@ -247,10 +424,10 @@ function updateRangeLabels() {
 }
 
 function getNutrientStatus(val, key) {
-  const t = getCurrentThreshold()[key];
-  if (val < t.low)  return { label: "Rendah",  cls: "rendah"  };
-  if (val > t.high) return { label: "Tinggi",  cls: "tinggi"  };
-  return               { label: "Optimal", cls: "optimal" };
+  const th = getCurrentThreshold()[key];
+  if (val < th.low)  return { label: t("status_rendah"),  cls: "rendah"  };
+  if (val > th.high) return { label: t("status_tinggi"),  cls: "tinggi"  };
+  return                { label: t("status_optimal"), cls: "optimal" };
 }
 
 function updateNutrients(last) {
@@ -264,9 +441,9 @@ function updateNutrients(last) {
 
   fields.forEach(({ key, val, elVal, elBar, elSt }) => {
     if (val == null) return;
-    const t   = getCurrentThreshold()[key];
-    const st  = getNutrientStatus(val, key);
-    const dec = (key === "PH" || key === "EC") ? 1 : 0;
+    const th   = getCurrentThreshold()[key];
+    const st   = getNutrientStatus(val, key);
+    const dec  = (key === "PH" || key === "EC") ? 1 : 0;
 
     $(elVal).textContent = Number(val).toFixed(dec);
     const stEl = $(elSt);
@@ -274,10 +451,10 @@ function updateNutrients(last) {
     stEl.className = "npk-status " + st.cls;
 
     if (elBar) {
-      const pct = Math.min((val / t.barMax) * 100, 100).toFixed(1);
+      const pct = Math.min((val / th.barMax) * 100, 100).toFixed(1);
       const bar = $(elBar);
       bar.style.width = pct + "%";
-      bar.style.background = t.color;
+      bar.style.background = th.color;
     }
   });
 
@@ -290,23 +467,23 @@ function updateRekomendasi(d) {
   const th = getCurrentThreshold();
 
   if (d.nitrogen != null) {
-    if (d.nitrogen < th.N.low)  msgs.push("Nitrogen rendah — tambahkan pupuk Urea atau ZA.");
-    if (d.nitrogen > th.N.high) msgs.push("Nitrogen terlalu tinggi — kurangi dosis pupuk N, risiko rebah (lodging) meningkat.");
+    if (d.nitrogen < th.N.low)  msgs.push(t("rekom_n_low"));
+    if (d.nitrogen > th.N.high) msgs.push(t("rekom_n_high"));
   }
   if (d.fosfor != null) {
-    if (d.fosfor < th.P.low)  msgs.push("Fosfor rendah — aplikasikan SP-36 atau TSP sebelum masa tanam/anakan.");
-    if (d.fosfor > th.P.high) msgs.push("Fosfor berlebih — tunda pemupukan P pada musim ini.");
+    if (d.fosfor < th.P.low)  msgs.push(t("rekom_p_low"));
+    if (d.fosfor > th.P.high) msgs.push(t("rekom_p_high"));
   }
   if (d.kalium != null) {
-    if (d.kalium < th.K.low)  msgs.push("Kalium rendah — tambahkan KCl pada fase anakan aktif.");
-    if (d.kalium > th.K.high) msgs.push("Kalium terlalu tinggi — hentikan pemupukan K sementara.");
+    if (d.kalium < th.K.low)  msgs.push(t("rekom_k_low"));
+    if (d.kalium > th.K.high) msgs.push(t("rekom_k_high"));
   }
   if (d.ph != null) {
-    if (d.ph < th.PH.low) msgs.push("pH terlalu asam — pertimbangkan pengapuran dengan dolomit atau kapur pertanian.");
-    if (d.ph > th.PH.high) msgs.push("pH terlalu basa — lakukan pengairan intensif atau tambahkan sulfur.");
+    if (d.ph < th.PH.low) msgs.push(t("rekom_ph_low"));
+    if (d.ph > th.PH.high) msgs.push(t("rekom_ph_high"));
   }
   if (d.ec != null && d.ec > th.EC.high) {
-    msgs.push("EC tinggi — indikasi salinitas berlebih, lakukan pencucian tanah.");
+    msgs.push(t("rekom_ec_high"));
   }
 
   const panel = $("rekomPanel");
@@ -340,9 +517,11 @@ function load() {
   updateRangeLabels();
   updateNutrients(last);
 
+  const lang = getLang();
+  const locale = lang === "en" ? "en-US" : "id-ID";
   const labels = data.map(d => {
-    const t = new Date(d.ts);
-    return t.toLocaleString("id-ID", { hour: "2-digit", minute: "2-digit" });
+    const d2 = new Date(d.ts);
+    return d2.toLocaleString(locale, { hour: "2-digit", minute: "2-digit" });
   });
   const temps = data.map(d => d.temp);
   const hums  = data.map(d => d.hum);
@@ -390,8 +569,8 @@ function load() {
   c1 = new Chart($("ch1"), {
     type: "line",
     data: { labels, datasets: [
-      { label: "Suhu",      data: temps, borderColor: "#ef4444", backgroundColor: "rgba(239,68,68,.08)",   borderWidth: isSmall ? 1.5 : 2, pointRadius: 0, tension: .3, yAxisID: "y"  },
-      { label: "Kelembaban", data: hums, borderColor: "#3b82f6", backgroundColor: "rgba(59,130,246,.08)",  borderWidth: isSmall ? 1.5 : 2, pointRadius: 0, tension: .3, yAxisID: "y1" }
+      { label: t("chart_label_temp"),  data: temps, borderColor: "#ef4444", backgroundColor: "rgba(239,68,68,.08)",   borderWidth: isSmall ? 1.5 : 2, pointRadius: 0, tension: .3, yAxisID: "y"  },
+      { label: t("chart_label_humid"), data: hums,  borderColor: "#3b82f6", backgroundColor: "rgba(59,130,246,.08)",  borderWidth: isSmall ? 1.5 : 2, pointRadius: 0, tension: .3, yAxisID: "y1" }
     ]},
     options: { ...baseOpts, scales: { ...baseOpts.scales,
       y:  { type: "linear", position: "left",  title: { display: true, text: "°C", font: { size: isSmall ? 10 : 11 } }, ticks: { font: { size: isSmall ? 9 : 10 } } },
@@ -403,8 +582,8 @@ function load() {
   c2 = new Chart($("ch2"), {
     type: "line",
     data: { labels, datasets: [
-      { label: "Tanah",  data: soils, borderColor: "#16a34a", backgroundColor: "rgba(22,163,74,.08)",   borderWidth: isSmall ? 1.5 : 2, pointRadius: 0, tension: .3, yAxisID: "y"  },
-      { label: "Cahaya", data: lits,  borderColor: "#f59e0b", backgroundColor: "rgba(245,158,11,.08)",  borderWidth: isSmall ? 1.5 : 2, pointRadius: 0, tension: .3, yAxisID: "y1" }
+      { label: t("chart_label_soil"),  data: soils, borderColor: "#16a34a", backgroundColor: "rgba(22,163,74,.08)",   borderWidth: isSmall ? 1.5 : 2, pointRadius: 0, tension: .3, yAxisID: "y"  },
+      { label: t("chart_label_light"), data: lits,  borderColor: "#f59e0b", backgroundColor: "rgba(245,158,11,.08)",  borderWidth: isSmall ? 1.5 : 2, pointRadius: 0, tension: .3, yAxisID: "y1" }
     ]},
     options: { ...baseOpts, scales: { ...baseOpts.scales,
       y:  { type: "linear", position: "left",  title: { display: true, text: "%",   font: { size: isSmall ? 10 : 11 } }, ticks: { font: { size: isSmall ? 9 : 10 } } },
@@ -427,9 +606,9 @@ function load() {
 
   const rows = [...data].reverse().slice(0, 20);
   $("tbody").innerHTML = rows.map(d => {
-    const t = new Date(d.ts);
+    const d2 = new Date(d.ts);
     return `<tr>
-      <td>${t.toLocaleString("id-ID")}</td>
+      <td>${d2.toLocaleString(locale)}</td>
       <td>${d.temp?.toFixed(1) ?? "-"}</td>
       <td>${d.hum?.toFixed(1)  ?? "-"}</td>
       <td>${d.soil             ?? "-"}</td>
@@ -493,10 +672,10 @@ window.addEventListener("DOMContentLoaded", () => {
       const crop = $("cropType").value;
       const err  = $("guestErr");
       err.textContent = "";
-      if (!id || !key) { err.textContent = "Isi semua kolom"; return; }
+      if (!id || !key) { err.textContent = t("err_fill_all"); return; }
       const allDevices = getAllDevices();
       const dev = allDevices.find(d => d.id === id && d.key === key);
-      if (!dev) { err.textContent = "Device ID atau API Key salah"; return; }
+      if (!dev) { err.textContent = t("err_wrong_device"); return; }
       const guestDev = { ...dev, crop, isGuest: true };
       sessionStorage.removeItem("sf_logged_user");
       setActiveDevice(guestDev);
@@ -510,9 +689,9 @@ window.addEventListener("DOMContentLoaded", () => {
       const pass  = $("loginPass").value.trim();
       const err   = $("loginErr");
       err.textContent = "";
-      if (!email || !pass) { err.textContent = "Isi semua kolom"; return; }
+      if (!email || !pass) { err.textContent = t("err_fill_all"); return; }
       const user = authUser(email, pass);
-      if (!user) { err.textContent = "Email atau password salah"; return; }
+      if (!user) { err.textContent = t("err_wrong_email"); return; }
       setLoggedInUser(user);
       if (user.devices.length === 0) {
         goToAccount();
@@ -532,13 +711,13 @@ window.addEventListener("DOMContentLoaded", () => {
       const pass  = $("regPass").value.trim();
       const err   = $("registerErr");
       err.textContent = "";
-      if (!name || !email || !pass) { err.textContent = "Isi semua kolom"; return; }
-      if (pass.length < 4) { err.textContent = "Password minimal 4 karakter"; return; }
+      if (!name || !email || !pass) { err.textContent = t("err_fill_all"); return; }
+      if (pass.length < 4) { err.textContent = t("err_short_pass"); return; }
       const ok = registerUser(name, email, pass);
-      if (!ok) { err.textContent = "Email sudah terdaftar"; return; }
+      if (!ok) { err.textContent = t("err_email_taken"); return; }
       $("registerForm").reset();
       $("tabLogin").click();
-      $("loginErr").textContent = "Pendaftaran berhasil! Silakan masuk.";
+      $("loginErr").textContent = t("register_success");
     });
 
     /* ── Logout ── */
@@ -553,7 +732,7 @@ window.addEventListener("DOMContentLoaded", () => {
         if (!user) {
           switchTab("login");
           displayLogin();
-          $("loginErr").textContent = "Silakan masuk atau daftar untuk menyimpan data.";
+          $("loginErr").textContent = t("err_save_guest");
           return;
         }
       }
@@ -567,8 +746,8 @@ window.addEventListener("DOMContentLoaded", () => {
       addDataPoint(dev.id, last.temp, last.hum, last.soil, last.light, last.nitrogen, last.fosfor, last.kalium, last.ph, last.ec);
       load();
       const btn = $("saveBtn");
-      btn.textContent = "Tersimpan!";
-      setTimeout(() => { btn.textContent = "Simpan"; }, 1500);
+      btn.textContent = t("saved");
+      setTimeout(() => { btn.textContent = t("btn_save"); }, 1500);
     });
 
     /* ── Account ── */
@@ -577,7 +756,7 @@ window.addEventListener("DOMContentLoaded", () => {
       if (!user) {
         switchTab("login");
         displayLogin();
-        $("loginErr").textContent = "Silakan masuk untuk mengakses akun.";
+        $("loginErr").textContent = t("err_account_only");
         return;
       }
       goToAccount();
@@ -602,7 +781,7 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ════════════ AKUN.HTML (Account) ════════════ */
+  /* ════════════ ACCOUNT.HTML ════════════ */
   if (hasAccount) {
     if (!logged) {
       goToLogin();
@@ -616,6 +795,9 @@ window.addEventListener("DOMContentLoaded", () => {
       if (dev) goToDash(dev);
       else goToLogin();
     });
+
+    /* ── Logout from Account ── */
+    $("logoutBtn").addEventListener("click", () => { logoutUser(); goToLogin(); });
 
     /* ── Add Device Modal ── */
     $("addDeviceBtn").addEventListener("click", () => {
@@ -640,11 +822,31 @@ window.addEventListener("DOMContentLoaded", () => {
       const crop = $("devCrop").value;
       const err  = $("addDeviceErr");
       err.textContent = "";
-      if (!id || !key || !name) { err.textContent = "Isi semua kolom"; return; }
+      if (!id || !key || !name) { err.textContent = t("err_fill_all"); return; }
       const ok = addUserDevice(id, key, name, crop);
-      if (!ok) { err.textContent = "Device ID sudah terdaftar di akun Anda"; return; }
+      if (!ok) { err.textContent = t("err_device_taken"); return; }
       $("addDeviceModal").style.display = "none";
       renderDeviceList();
     });
   }
+
+  applyLang();
 });
+
+// function simNPK(opts) {
+//   const dev = getActiveDevice();
+//   if (!dev) { console.log("No active device"); return; }
+//   const all = getData(dev.id);
+//   const last = all[all.length - 1] || { temp: 28, hum: 70, soil: 45, light: 5000 };
+//   addDataPoint(
+//     dev.id,
+//     last.temp, last.hum, last.soil, last.light,
+//     opts?.nitrogen ?? 30,
+//     opts?.fosfor   ?? 5,
+//     opts?.kalium   ?? 50,
+//     opts?.ph       ?? 4.5,
+//     opts?.ec       ?? 0.3
+//   );
+//   load();
+//   console.log("✓ Simulasi:", { nitrogen: opts?.nitrogen ?? 30, fosfor: opts?.fosfor ?? 5, kalium: opts?.kalium ?? 50, ph: opts?.ph ?? 4.5, ec: opts?.ec ?? 0.3 });
+// }

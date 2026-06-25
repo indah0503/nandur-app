@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Akun - Nandur</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ACCOUNT SCREEN -->
+<div id="accountScreen" class="screen active">
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <h1 data-i18n="account_title">Akun Saya</h1>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button id="langToggle" class="btn btn-ghost" onclick="toggleLang()">EN</button>
+      <button id="backDashBtn" class="btn btn-ghost" data-i18n="btn_back_dashboard">Kembali ke Dashboard</button>
+      <button id="logoutBtn" class="btn btn-ghost" data-i18n="btn_logout">Keluar</button>
+    </div>
+  </header>
+  <main class="container">
+    <div class="account-info">
+      <div class="account-card">
+        <div class="account-label" data-i18n="label_name">Nama</div>
+        <div class="account-value" id="accName">--</div>
+      </div>
+      <div class="account-card">
+        <div class="account-label" data-i18n="label_email">Email</div>
+        <div class="account-value" id="accEmail">--</div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div class="section-title" style="margin:0" data-i18n="section_devices">Daftar Perangkat</div>
+      <button id="addDeviceBtn" class="btn btn-ghost btn-save" data-i18n="btn_add_device">+ Tambah Perangkat</button>
+    </div>
+    <div id="deviceList" class="device-list"></div>
+  </main>
+</div>
+
+<!-- ADD DEVICE MODAL -->
+<div id="addDeviceModal" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 data-i18n="modal_add_device">Tambah Perangkat Baru</h3>
+      <button id="closeModalBtn" class="modal-close">&times;</button>
+    </div>
+    <form id="addDeviceForm" autocomplete="off">
+      <div class="fg">
+        <label for="devId" data-i18n="label_device_id">Device ID (Huruf kapital)</label>
+        <input type="text" id="devId" data-i18n-placeholder="ph_device_id" placeholder="Contoh: ESP32_001" required>
+      </div>
+      <div class="fg">
+        <label for="devKey" data-i18n="label_api_key">API Key</label>
+        <input type="password" id="devKey" data-i18n-placeholder="ph_api_key" placeholder="Masukkan API Key" required>
+      </div>
+      <div class="fg">
+        <label for="devName" data-i18n="label_device_name">Nama Perangkat</label>
+        <input type="text" id="devNameInput" data-i18n-placeholder="ph_device_name" placeholder="Contoh: Sensor Kebun Belakang" required>
+      </div>
+      <div class="fg">
+        <label for="devCrop" data-i18n="label_crop">Pilih Tanaman</label>
+        <select id="devCrop" required>
+          <option value="padi" data-i18n="crop_padi">Padi</option>
+          <option value="jagung" data-i18n="crop_jagung">Jagung</option>
+        </select>
+      </div>
+      <div id="addDeviceErr" class="err"></div>
+      <button type="submit" class="btn btn-green" data-i18n="btn_save_device">Simpan Perangkat</button>
+    </form>
+  </div>
+</div>
+
+<script src="assets/js/devices.js"></script>
+<script src="assets/js/thresholds.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/mock-data.js"></script>
+</body>
+</html>

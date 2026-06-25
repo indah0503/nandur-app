@@ -12,65 +12,65 @@
 <div id="loginScreen" class="screen active">
   <div class="login-box">
     <img src="assets/img/logo-nandur.png">
-    <p class="sub">Monitoring Lingkungan Pertanian</p>
+    <p class="sub" data-i18n="subtitle">Monitoring Lingkungan Pertanian</p>
     <div class="auth-toggle">
-      <button type="button" class="auth-tab active" id="tabGuest">Tamu</button>
-      <button type="button" class="auth-tab" id="tabLogin">Masuk</button>
-      <button type="button" class="auth-tab" id="tabRegister">Daftar</button>
+      <button type="button" class="auth-tab active" id="tabGuest" data-i18n="tab_guest">Tamu</button>
+      <button type="button" class="auth-tab" id="tabLogin" data-i18n="tab_login">Masuk</button>
+      <button type="button" class="auth-tab" id="tabRegister" data-i18n="tab_register">Daftar</button>
     </div>
 
     <!-- GUEST FORM -->
     <form id="guestForm" class="auth-form" autocomplete="off">
       <div class="fg">
-        <label for="deviceId">Device ID (Gunakan huruf kapital)</label>
-        <input type="text" id="deviceId" placeholder="Contoh: ESP32_001" required>
+        <label for="deviceId" data-i18n="label_device_id">Device ID (Gunakan huruf kapital)</label>
+        <input type="text" id="deviceId" data-i18n-placeholder="ph_device_id" placeholder="Contoh: ESP32_001" required>
       </div>
       <div class="fg">
-        <label for="apiKey">API Key</label>
-        <input type="password" id="apiKey" placeholder="Masukkan API Key" required>
+        <label for="apiKey" data-i18n="label_api_key">API Key</label>
+        <input type="password" id="apiKey" data-i18n-placeholder="ph_api_key" placeholder="Masukkan API Key" required>
       </div>
       <div class="fg">
-        <label for="cropType">Pilih Tanaman</label>
+        <label for="cropType" data-i18n="label_crop">Pilih Tanaman</label>
         <select id="cropType" required>
-          <option value="padi">Padi</option>
-          <option value="jagung">Jagung</option>
+          <option value="padi" data-i18n="crop_padi">Padi</option>
+          <option value="jagung" data-i18n="crop_jagung">Jagung</option>
         </select>
       </div>
       <div id="guestErr" class="err"></div>
-      <button type="submit" class="btn btn-green">Lihat Dashboard</button>
-      <p class="auth-hint">Masuk atau daftar untuk menyimpan data ke akun Anda.</p>
+      <button type="submit" class="btn btn-green" data-i18n="btn_view_dashboard">Lihat Dashboard</button>
+      <p class="auth-hint" data-i18n="hint_guest">Masuk atau daftar untuk menyimpan data ke akun Anda.</p>
     </form>
 
     <!-- LOGIN FORM -->
     <form id="loginForm" class="auth-form" style="display:none" autocomplete="off">
       <div class="fg">
-        <label for="loginEmail">Email</label>
+        <label for="loginEmail" data-i18n="label_email">Email</label>
         <input type="email" id="loginEmail" placeholder="contoh@email.com" required>
       </div>
       <div class="fg">
-        <label for="loginPass">Password</label>
-        <input type="password" id="loginPass" placeholder="Masukkan password" required>
+        <label for="loginPass" data-i18n="label_password">Password</label>
+        <input type="password" id="loginPass" data-i18n-placeholder="ph_password" placeholder="Masukkan password" required>
       </div>
       <div id="loginErr" class="err"></div>
-      <button type="submit" class="btn btn-green">Masuk</button>
+      <button type="submit" class="btn btn-green" data-i18n="btn_login">Masuk</button>
     </form>
 
     <!-- REGISTER FORM -->
     <form id="registerForm" class="auth-form" style="display:none" autocomplete="off">
       <div class="fg">
-        <label for="regName">Nama Lengkap</label>
-        <input type="text" id="regName" placeholder="Nama Anda" required>
+        <label for="regName" data-i18n="label_fullname">Nama Lengkap</label>
+        <input type="text" id="regName" data-i18n-placeholder="ph_name" placeholder="Nama Anda" required>
       </div>
       <div class="fg">
-        <label for="regEmail">Email</label>
+        <label for="regEmail" data-i18n="label_email">Email</label>
         <input type="email" id="regEmail" placeholder="contoh@email.com" required>
       </div>
       <div class="fg">
-        <label for="regPass">Password</label>
-        <input type="password" id="regPass" placeholder="Buat password" required>
+        <label for="regPass" data-i18n="label_password">Password</label>
+        <input type="password" id="regPass" data-i18n-placeholder="ph_create_pass" placeholder="Buat password" required>
       </div>
       <div id="registerErr" class="err"></div>
-      <button type="submit" class="btn btn-green">Daftar</button>
+      <button type="submit" class="btn btn-green" data-i18n="btn_register">Daftar</button>
     </form>
   </div>
 </div>
@@ -84,28 +84,29 @@
       <span class="tag tag-crop" id="cropLabel"></span>
     </div>
     <div style="display:flex;gap:8px">
-      <button id="accountBtn" class="btn btn-ghost btn-accent">Akun</button>
-      <button id="saveBtn" class="btn btn-ghost btn-save">Simpan</button>
-      <button id="logoutBtn" class="btn btn-ghost">Keluar</button>
+      <button id="langToggle" class="btn btn-ghost" onclick="toggleLang()">EN</button>
+      <button id="accountBtn" class="btn btn-ghost btn-accent" data-i18n="btn_account">Akun</button>
+      <button id="saveBtn" class="btn btn-ghost btn-save" data-i18n="btn_save">Simpan</button>
+      <button id="logoutBtn" class="btn btn-ghost" data-i18n="btn_logout">Keluar</button>
     </div>
   </header>
   <main class="container">
     <div class="cards">
       <div class="card card-t">
-        <div class="card-tit">Suhu</div>
+        <div class="card-tit" data-i18n="card_temp">Suhu</div>
         <div class="card-val" id="vTemp">--</div>
         <div class="card-u">&deg;C</div>
       </div>
       <div class="card card-h">
-        <div class="card-tit">Kelembaban Udara</div>
+        <div class="card-tit" data-i18n="card_humid">Kelembaban Udara</div>
         <div class="card-val" id="vHum">--</div>
         <div class="card-u">%</div>
       </div>
-      <div class="card card-s"><div class="card-tit">Kelembaban Tanah</div><div class="card-val" id="vSoil">--</div><div class="card-u">%</div></div>
-      <div class="card card-l"><div class="card-tit">Intensitas Cahaya</div><div class="card-val" id="vLight">--</div><div class="card-u">lux</div></div>
+      <div class="card card-s"><div class="card-tit" data-i18n="card_soil">Kelembaban Tanah</div><div class="card-val" id="vSoil">--</div><div class="card-u">%</div></div>
+      <div class="card card-l"><div class="card-tit" data-i18n="card_light">Intensitas Cahaya</div><div class="card-val" id="vLight">--</div><div class="card-u">lux</div></div>
     </div>
 
-    <div class="section-title">Unsur Hara Tanah</div>
+    <div class="section-title" data-i18n="section_nutrients">Unsur Hara Tanah</div>
 
     <div class="cards npk-cards">
       <div class="card card-n">
@@ -114,7 +115,7 @@
         <div class="card-u">mg/kg</div>
         <div class="npk-bar-wrap"><div class="npk-bar" id="barN"></div></div>
         <span class="npk-status" id="stN"></span>
-        <div class="npk-range" id="rangeN">Optimal padi: 120–200 mg/kg</div>
+        <div class="npk-range" id="rangeN"></div>
       </div>
       <div class="card card-p">
         <div class="card-tit">Fosfor (P)</div>
@@ -122,7 +123,7 @@
         <div class="card-u">mg/kg</div>
         <div class="npk-bar-wrap"><div class="npk-bar" id="barP"></div></div>
         <span class="npk-status" id="stP"></span>
-        <div class="npk-range" id="rangeP">Optimal padi: 15–40 mg/kg</div>
+        <div class="npk-range" id="rangeP"></div>
       </div>
       <div class="card card-k">
         <div class="card-tit">Kalium (K)</div>
@@ -130,21 +131,21 @@
         <div class="card-u">mg/kg</div>
         <div class="npk-bar-wrap"><div class="npk-bar" id="barK"></div></div>
         <span class="npk-status" id="stK"></span>
-        <div class="npk-range" id="rangeK">Optimal padi: 100–200 mg/kg</div>
+        <div class="npk-range" id="rangeK"></div>
       </div>
       <div class="card card-ph">
-        <div class="card-tit">pH Tanah</div>
+        <div class="card-tit" data-i18n="card_ph">pH Tanah</div>
         <div class="card-val" id="vPH">--</div>
         <div class="card-u">0–14</div>
         <span class="npk-status" id="stPH"></span>
-        <div class="npk-range" id="rangePH">Optimal padi: 6.0–7.0</div>
+        <div class="npk-range" id="rangePH"></div>
       </div>
       <div class="card card-ec">
-        <div class="card-tit">EC Tanah</div>
+        <div class="card-tit" data-i18n="card_ec">EC Tanah</div>
         <div class="card-val" id="vEC">--</div>
         <div class="card-u">mS/cm</div>
         <span class="npk-status" id="stEC"></span>
-        <div class="npk-range" id="rangeEC">Optimal padi: 0.8–2.0 mS/cm</div>
+        <div class="npk-range" id="rangeEC"></div>
       </div>
     </div>
 
@@ -156,29 +157,40 @@
         </svg>
       </div>
       <div>
-        <div class="rekom-title">Rekomendasi Pemupukan</div>
+        <div class="rekom-title" data-i18n="rekom_title">Rekomendasi Pemupukan</div>
         <div class="rekom-text" id="rekomText"></div>
       </div>
     </div>
 
     <div class="range-sel">
-      <button class="r-btn active" data-range="24h">24 Jam</button>
-      <button class="r-btn" data-range="7d">7 Hari</button>
-      <button class="r-btn" data-range="30d">30 Hari</button>
+      <button class="r-btn active" data-range="24h" data-i18n="range_24h">24 Jam</button>
+      <button class="r-btn" data-range="7d" data-i18n="range_7d">7 Hari</button>
+      <button class="r-btn" data-range="30d" data-i18n="range_30d">30 Hari</button>
     </div>
 
     <div class="charts">
-      <div class="ch-box"><h3>Suhu &amp; Kelembaban Udara</h3><canvas id="ch1"></canvas></div>
-      <div class="ch-box"><h3>Kelembaban Tanah &amp; Cahaya</h3><canvas id="ch2"></canvas></div>
-      <div class="ch-box"><h3>Tren Unsur Hara (N, P, K)</h3><canvas id="ch3"></canvas></div>
+      <div class="ch-box"><h3 data-i18n="chart_th">Suhu &amp; Kelembaban Udara</h3><canvas id="ch1"></canvas></div>
+      <div class="ch-box"><h3 data-i18n="chart_sc">Kelembaban Tanah &amp; Cahaya</h3><canvas id="ch2"></canvas></div>
+      <div class="ch-box"><h3 data-i18n="chart_npk">Tren Unsur Hara (N, P, K)</h3><canvas id="ch3"></canvas></div>
     </div>
 
     <div class="tbl-wrap">
-      <h3>Riwayat Data</h3>
+      <h3 data-i18n="history_title">Riwayat Data</h3>
       <div class="tbl-scroll">
         <table>
-          <thead><tr><th>Waktu</th><th>Suhu (&deg;C)</th><th>Keleb. Udara (%)</th><th>Keleb. Tanah (%)</th><th>Cahaya (lux)</th><th>Nitrogen (mg/kg)</th><th>Fosfor (mg/kg)</th><th>Kalium (mg/kg)</th><th>PH Tanah</th><th>EC Tanah (mS/cm)</th></tr></thead>
-          <tbody id="tbody"><tr><td colspan="10" class="empty">Belum ada data</td></tr></tbody>
+          <thead><tr>
+            <th data-i18n="th_time">Waktu</th>
+            <th data-i18n="th_temp">Suhu (&deg;C)</th>
+            <th data-i18n="th_humid">Keleb. Udara (%)</th>
+            <th data-i18n="th_soil">Keleb. Tanah (%)</th>
+            <th data-i18n="th_light">Cahaya (lux)</th>
+            <th>Nitrogen (mg/kg)</th>
+            <th>Fosfor (mg/kg)</th>
+            <th>Kalium (mg/kg)</th>
+            <th data-i18n="th_ph">PH Tanah</th>
+            <th data-i18n="th_ec">EC Tanah (mS/cm)</th>
+          </tr></thead>
+          <tbody id="tbody"><tr><td colspan="10" class="empty" data-i18n="no_data">Belum ada data</td></tr></tbody>
         </table>
       </div>
     </div>
